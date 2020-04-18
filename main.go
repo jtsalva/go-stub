@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -27,29 +28,19 @@ func serveStubs() {
 
 	for _, stub := range config.Stubs {
 		fmt.Printf("Registering %s\n", stub.String())
-		router.HandleFunc(stub.Request.Url, stubHandler(stub)).
-			Methods(stub.Request.Method...).
-			Queries(stub.Request.QueryPairs()...).
-			Headers(stub.Request.HeaderPairs()...)
+		router.HandleFunc(stub.Request.Url, StubHandler(stub)).MatcherFunc(StubMatcher(stub))
 	}
 
-	err := http.ListenAndServe(fmt.Sprintf(":%d", config.Port), router)
+	srv := &http.Server{
+		Handler:      router,
+		Addr:         fmt.Sprintf("0.0.0.0:%d", config.Port),
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+		IdleTimeout:  time.Second * 60,
+	}
+	err := srv.ListenAndServe()
 	if err != nil {
 		exitWithError(fmt.Sprintf("error starting server: %s", err))
-	}
-}
-
-func stubHandler(stub Stub) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request)  {
-		for key, value := range stub.Response.Headers {
-			w.Header().Set(key, value)
-		}
-		w.WriteHeader(stub.Response.Status)
-
-		_, err := w.Write([]byte(stub.Response.Body))
-		if err != nil {
-			exitWithError(fmt.Sprintf("error writing response: %s", err))
-		}
 	}
 }
 

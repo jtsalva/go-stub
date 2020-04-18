@@ -12,9 +12,9 @@ import (
 )
 
 type Config struct {
-	Port int
+	Port           int
 	StubsDirectory string
-	Stubs []Stub
+	Stubs          []Stub
 }
 
 func (c *Config) LoadStubs() error {

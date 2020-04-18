@@ -2,30 +2,21 @@ package main
 
 import "fmt"
 
-type Query map[string]string
-type Headers map[string]string
+type KeyValuePairs map[string]string
+
+// func (sm KeyValuePairs) Pairs() []string {
+// 	var pairs []string
+// 	for key, value := range sm {
+// 		pairs = append(pairs, key, value)
+// 	}
+// 	return pairs
+// }
 
 type Request struct {
-	Method []string `yaml:"method"`
-	Url string `yaml:"url"`
-	Query Query `yaml:"query"`
-	Headers Headers `yaml:"headers"`
-}
-
-func (req *Request) QueryPairs() []string {
-	var queryPairs []string
-	for key, value := range req.Query {
-		queryPairs = append(queryPairs, key, value)
-	}
-	return queryPairs
-}
-
-func (req *Request) HeaderPairs() []string {
-	var headerPairs []string
-	for key, value := range req.Headers {
-		headerPairs = append(headerPairs, key, value)
-	}
-	return headerPairs
+	Method  []string      `yaml:"method"`
+	Url     string        `yaml:"url"`
+	Query   KeyValuePairs `yaml:"query"`
+	Headers KeyValuePairs `yaml:"headers"`
 }
 
 func (req *Request) String() string {
@@ -33,10 +24,10 @@ func (req *Request) String() string {
 }
 
 type Response struct {
-	Headers Headers `yaml:"headers"`
-	Latency int `yaml:"latency"`
-	Body string `yaml:"body"`
-	Status int `yaml:"status"`
+	Headers KeyValuePairs `yaml:"headers"`
+	Latency int           `yaml:"latency"`
+	Body    string        `yaml:"body"`
+	Status  int           `yaml:"status"`
 }
 
 func (res *Response) String() string {
@@ -44,7 +35,7 @@ func (res *Response) String() string {
 }
 
 type Stub struct {
-	Request Request `yaml:"request"`
+	Request  Request  `yaml:"request"`
 	Response Response `yaml:"response"`
 }
 
