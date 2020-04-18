@@ -6,15 +6,24 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
-	Port           int
-	StubsDirectory string
-	Stubs          []Stub
+	WriteTimeout    time.Duration
+	ReadTimeout     time.Duration
+	IdleTimeout     time.Duration
+	Port            int
+	StubsDirectory  string
+	Stubs           []Stub
+	CorsAllowOrigin string
+}
+
+func (c *Config) IsCorsEnabled() bool {
+	return c.CorsAllowOrigin != ""
 }
 
 func (c *Config) LoadStubs() error {

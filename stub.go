@@ -22,21 +22,11 @@ func StubHandler(stub Stub) func(http.ResponseWriter, *http.Request) {
 	}
 }
 
-func StubMatcher(stub Stub) func(*http.Request, *mux.RouteMatch) bool {
+func QueryMatcher(query KeyValuePairs) func(*http.Request, *mux.RouteMatch) bool {
 	return func(r *http.Request, rm *mux.RouteMatch) bool {
-		if matched := matchMethod(stub.Request.Method, r.Method); !matched {
-			return false
-		}
-
-		for key, value := range stub.Request.Headers {
-			if matched, _ := regexp.MatchString(value, r.Header.Get(key)); !matched {
-				return false
-			}
-		}
-
-		query := r.URL.Query()
-		for key, value := range stub.Request.Query {
-			if matched, _ := regexp.MatchString(value, query.Get(key)); !matched {
+		urlQuery := r.URL.Query()
+		for key, value := range query {
+			if matched, _ := regexp.MatchString(value, urlQuery.Get(key)); !matched {
 				return false
 			}
 		}
@@ -45,11 +35,14 @@ func StubMatcher(stub Stub) func(*http.Request, *mux.RouteMatch) bool {
 	}
 }
 
-func matchMethod(methods []string, method string) bool {
-	for _, allowedMethod := range methods {
-		if method == allowedMethod {
-			return true
+func HeadersMatcher(headers KeyValuePairs) func(*http.Request, *mux.RouteMatch) bool {
+	return func(r *http.Request, rm *mux.RouteMatch) bool {
+		for key, value := range headers {
+			if matched, _ := regexp.MatchString(value, r.Header.Get(key)); !matched {
+				return false
+			}
 		}
+
+		return true
 	}
-	return false
 }
