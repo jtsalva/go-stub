@@ -32,7 +32,7 @@ func serveStubs() {
 
 	for _, stub := range config.Stubs {
 		fmt.Printf("Registering %s\n", stub.String())
-		if config.IsCorsEnabled() {
+		if config.IsCorsEnabled() && isMissingOptionsMethod(stub.Request.Method) {
 			stub.Request.Method = append(stub.Request.Method, http.MethodOptions)
 		}
 		router.HandleFunc(stub.Request.Url, StubHandler(stub)).
@@ -42,12 +42,7 @@ func serveStubs() {
 	}
 	if config.IsCorsEnabled() {
 		router.Use(mux.CORSMethodMiddleware(router))
-		router.Use(func(next http.Handler) http.Handler {
-			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				w.Header().Set("Access-Control-Allow-Origin", config.CorsAllowOrigin)
-				next.ServeHTTP(w, r)
-			})
-		})
+		router.Use(CORSBlanketMiddleware)
 	}
 
 	srv := &http.Server{
@@ -61,6 +56,24 @@ func serveStubs() {
 	if err != nil {
 		exitWithError(fmt.Sprintf("error starting server: %s", err))
 	}
+}
+
+func isMissingOptionsMethod(methods []string) bool {
+	for _, method := range methods {
+		if method == http.MethodOptions {
+			return false
+		}
+	}
+	return true
+}
+
+func CORSBlanketMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", config.CorsAllowOrigin)
+		w.Header().Set("Access-Control-Expose-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		next.ServeHTTP(w, r)
+	})
 }
 
 func exitWithError(message string) {
