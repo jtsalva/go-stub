@@ -16,9 +16,9 @@ type Config struct {
 	StubsDirectory  string        `short:"d" long:"directory" description:"Path to directory containing yml stub files" required:"true"`
 	Port            int           `short:"p" long:"port" description:"Port to serve stubs from" required:"true"`
 	CorsAllowOrigin string        `short:"o" long:"cors-allow-origin" description:"Blanket allow CORS from specified origin"`
-	WriteTimeout    time.Duration `long:"write-timeout" description:"Server write timeout"`
-	ReadTimeout     time.Duration `long:"read-timeout" description:"Server read timeout"`
-	IdleTimeout     time.Duration `long:"idle-timeout" description:"Server idle timeout"`
+	WriteTimeout    time.Duration `long:"write-timeout" description:"Server write timeout duration"`
+	ReadTimeout     time.Duration `long:"read-timeout" description:"Server read timeout duration"`
+	IdleTimeout     time.Duration `long:"idle-timeout" description:"Server idle timeout duration"`
 	Stubs           []Stub
 }
 

@@ -1,16 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type KeyValuePairs map[string]string
-
-// func (sm KeyValuePairs) Pairs() []string {
-// 	var pairs []string
-// 	for key, value := range sm {
-// 		pairs = append(pairs, key, value)
-// 	}
-// 	return pairs
-// }
 
 type Request struct {
 	Method  []string      `yaml:"method"`

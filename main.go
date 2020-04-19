@@ -17,21 +17,17 @@ var config = Config{
 }
 
 func main() {
-	parseCommandLineFlags()
+	_, err := flags.Parse(&config)
+	if err != nil {
+		exitWithError(fmt.Sprintf("unable to parse command line flags: %s", err))
+	}
 
-	err := config.LoadStubs()
+	err = config.LoadStubs()
 	if err != nil {
 		exitWithError(fmt.Sprintf("error loading stubs: %s", err))
 	}
 
 	serveStubs()
-}
-
-func parseCommandLineFlags() {
-	_, err := flags.Parse(&config)
-	if err != nil {
-		exitWithError(fmt.Sprintf("unable to parse command line flags: %s", err))
-	}
 }
 
 func serveStubs() {

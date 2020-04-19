@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -18,6 +19,10 @@ func StubHandler(stub Stub) func(http.ResponseWriter, *http.Request) {
 		_, err := w.Write([]byte(stub.Response.Body))
 		if err != nil {
 			exitWithError(fmt.Sprintf("error writing response: %s", err))
+		}
+
+		if stub.Response.Latency != 0 {
+			time.Sleep(time.Duration(stub.Response.Latency) * time.Millisecond)
 		}
 	}
 }
