@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/fatih/color"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v3"
 )
@@ -27,7 +28,7 @@ func (c *Config) IsCorsEnabled() bool {
 }
 
 func (c *Config) LoadStubs() error {
-	fmt.Printf("Loading stubs from %s\n", c.StubsDirectory)
+	fmt.Printf("Loading stubs from %s\n", color.BlueString(c.StubsDirectory))
 
 	stubFilePaths, err := walkMatch(c.StubsDirectory, "*.yml")
 	if err != nil {
@@ -36,7 +37,7 @@ func (c *Config) LoadStubs() error {
 
 	var allStubs []Stub
 	for _, filePath := range stubFilePaths {
-		fmt.Printf("Reading %s\n", filePath[strings.LastIndex(filePath, "/")+1:])
+		fmt.Printf("Reading %s\n", color.BlueString(filePath[strings.LastIndex(filePath, "/")+1:]))
 		file, err := ioutil.ReadFile(filePath)
 		if err != nil {
 			return errors.Wrapf(err, "failed to read stub file '%s': %v", filePath, err.Error())

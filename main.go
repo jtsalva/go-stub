@@ -35,7 +35,7 @@ func serveStubs() {
 	router := mux.NewRouter()
 
 	for _, stub := range config.Stubs {
-		fmt.Printf("Registering %s\n", stub.String())
+		fmt.Println(stub.String())
 		if config.IsCorsEnabled() && isMissingOptionsMethod(stub.Request.Methods) {
 			stub.Request.Methods = append(stub.Request.Methods, http.MethodOptions)
 		}
@@ -66,7 +66,7 @@ func serveStubs() {
 		IdleTimeout:  config.IdleTimeout,
 	}
 
-	fmt.Printf("Serving stubs on port %d\n", config.Port)
+	fmt.Printf("Serving %d stubs on port %d\n", len(config.Stubs), config.Port)
 	err := srv.ListenAndServe()
 	if err != nil {
 		exitWithError(fmt.Sprintf("error starting server: %s", err))

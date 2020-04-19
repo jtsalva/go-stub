@@ -23,7 +23,7 @@ func StubHandler(stub Stub) func(http.ResponseWriter, *http.Request) {
 		if stub.Response.File != "" {
 			response, err = ioutil.ReadFile(stub.Response.File)
 			if err != nil {
-				printError(fmt.Sprintf("[%s] error reading file '%s': %s", stub.String(), stub.Response.File, err))
+				printError(fmt.Sprintf("[%s %s] error reading file '%s': %s", r.Method, stub.Request.Path, stub.Response.File, err))
 			}
 		}
 		_, err = w.Write(response)

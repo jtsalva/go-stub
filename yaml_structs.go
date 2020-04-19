@@ -23,7 +23,7 @@ func (req *Request) String() string {
 	} else {
 		route = req.PathPrefix
 	}
-	return fmt.Sprintf("%s %s", color.BlueString(fmt.Sprintf("%v", req.Methods)), color.GreenString(route))
+	return fmt.Sprintf("%s %s", color.MagentaString(fmt.Sprintf("%v", req.Methods)), color.GreenString(route))
 }
 
 type Response struct {
