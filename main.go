@@ -57,7 +57,7 @@ func serveStubs() {
 	if config.IsCorsEnabled() {
 		fmt.Printf("Allowing CORS from origin '%s'\n", config.CorsAllowOrigin)
 		router.Use(mux.CORSMethodMiddleware(router))
-		router.Use(CORSBlanketMiddleware)
+		router.Use(CORSOriginAndHeadersMiddleware)
 	}
 
 	srv := &http.Server{
