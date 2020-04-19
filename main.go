@@ -11,9 +11,9 @@ import (
 )
 
 var config = Config{
-	WriteTimeout:    15000 * time.Millisecond,
-	ReadTimeout:     15000 * time.Millisecond,
-	IdleTimeout:     60000 * time.Millisecond,
+	WriteTimeout: 15000 * time.Millisecond,
+	ReadTimeout:  15000 * time.Millisecond,
+	IdleTimeout:  60000 * time.Millisecond,
 }
 
 func main() {
