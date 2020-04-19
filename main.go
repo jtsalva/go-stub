@@ -40,6 +40,7 @@ func serveStubs() {
 			MatcherFunc(QueryMatcher(stub.Request.Query)).
 			MatcherFunc(HeadersMatcher(stub.Request.Headers))
 	}
+
 	if config.IsCorsEnabled() {
 		router.Use(mux.CORSMethodMiddleware(router))
 		router.Use(CORSBlanketMiddleware)
@@ -65,15 +66,6 @@ func isMissingOptionsMethod(methods []string) bool {
 		}
 	}
 	return true
-}
-
-func CORSBlanketMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", config.CorsAllowOrigin)
-		w.Header().Set("Access-Control-Expose-Headers", "*")
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		next.ServeHTTP(w, r)
-	})
 }
 
 func exitWithError(message string) {
