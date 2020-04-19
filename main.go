@@ -75,6 +75,10 @@ func isMissingOptionsMethod(methods []string) bool {
 }
 
 func exitWithError(message string) {
-	_, _ = fmt.Fprint(os.Stderr, message)
+	printError(message)
 	os.Exit(1)
+}
+
+func printError(message string) {
+	_, _ = fmt.Fprint(os.Stderr, message)
 }

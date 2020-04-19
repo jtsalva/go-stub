@@ -21,6 +21,7 @@ type Response struct {
 	Headers KeyValuePairs `yaml:"headers"`
 	Latency int           `yaml:"latency"`
 	Body    string        `yaml:"body"`
+	File    string        `yaml:"file"`
 	Status  int           `yaml:"status"`
 }
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"regexp"
 	"time"
@@ -11,14 +12,23 @@ import (
 
 func StubHandler(stub Stub) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		var err error
+
 		for key, value := range stub.Response.Headers {
 			w.Header().Set(key, value)
 		}
 		w.WriteHeader(stub.Response.Status)
 
-		_, err := w.Write([]byte(stub.Response.Body))
+		response := []byte(stub.Response.Body)
+		if stub.Response.File != "" {
+			response, err = ioutil.ReadFile(stub.Response.File)
+			if err != nil {
+				printError(fmt.Sprintf("[%s] error reading file '%s': %s", stub.String(), stub.Response.File, err))
+			}
+		}
+		_, err = w.Write(response)
 		if err != nil {
-			exitWithError(fmt.Sprintf("error writing response: %s", err))
+			printError(fmt.Sprintf("error writing response: %s", err))
 		}
 
 		if stub.Response.Latency != 0 {
