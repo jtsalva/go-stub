@@ -45,7 +45,6 @@ func QueryMatcher(query KeyValuePairs) func(*http.Request, *mux.RouteMatch) bool
 				return false
 			}
 		}
-
 		return true
 	}
 }
@@ -57,7 +56,6 @@ func HeadersMatcher(headers KeyValuePairs) func(*http.Request, *mux.RouteMatch) 
 				return false
 			}
 		}
-
 		return true
 	}
 }

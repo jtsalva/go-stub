@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -31,11 +32,12 @@ func (c *Config) IsCorsEnabled() bool {
 func (c *Config) LoadStubs() error {
 	fmt.Printf("Loading stubs from %s\n", color.BlueString(c.StubsDirectory))
 
-	stubFilePaths, err := walkMatch(c.StubsDirectory, "*.yml")
+	stubFilePaths, err := walkMatch(c.StubsDirectory, "*.stub.yml")
 	if err != nil {
 		return errors.Wrapf(err, "failed to read stub directory '%s'", c.StubsDirectory)
 	}
 
+	yamlReferenceDirs := yaml.ReferenceDirs(c.StubsDirectory)
 	var allStubs []Stub
 	for _, filePath := range stubFilePaths {
 		fmt.Printf("Reading %s\n", color.BlueString(filePath[strings.LastIndex(filePath, "/")+1:]))
@@ -45,7 +47,7 @@ func (c *Config) LoadStubs() error {
 		}
 
 		var stubs []Stub
-		err = yaml.Unmarshal(file, &stubs)
+		err = yaml.NewDecoder(bytes.NewBuffer(file), yamlReferenceDirs).Decode(&stubs)
 		if err != nil {
 			return errors.Wrapf(err, "failed to unmarshal stub file '%s'", filePath)
 		}
