@@ -11,9 +11,9 @@ import (
 
 var config = Config{
 	Port:            8080,
-	WriteTimeout:    15 * time.Second,
-	ReadTimeout:     15 * time.Second,
-	IdleTimeout:     60 * time.Second,
+	WriteTimeout:    15000 * time.Millisecond,
+	ReadTimeout:     15000 * time.Millisecond,
+	IdleTimeout:     60000 * time.Millisecond,
 	StubsDirectory:  "./test-stubs",
 	CorsAllowOrigin: "*",
 }
