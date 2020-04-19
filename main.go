@@ -38,10 +38,17 @@ func serveStubs() {
 		if config.IsCorsEnabled() && isMissingOptionsMethod(stub.Request.Methods) {
 			stub.Request.Methods = append(stub.Request.Methods, http.MethodOptions)
 		}
-		router.HandleFunc(stub.Request.Path, StubHandler(stub)).
-			Methods(stub.Request.Methods...).
-			MatcherFunc(QueryMatcher(stub.Request.Query)).
-			MatcherFunc(HeadersMatcher(stub.Request.Headers))
+
+		var route *mux.Route
+		if stub.Request.Path != "" {
+			route = router.HandleFunc(stub.Request.Path, StubHandler(stub))
+		} else {
+			route = router.PathPrefix(stub.Request.PathPrefix).HandlerFunc(StubHandler(stub))
+		}
+
+		route.Methods(stub.Request.Methods...).
+			  MatcherFunc(QueryMatcher(stub.Request.Query)).
+			  MatcherFunc(HeadersMatcher(stub.Request.Headers))
 	}
 
 	if config.IsCorsEnabled() {

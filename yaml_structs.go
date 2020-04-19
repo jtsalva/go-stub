@@ -7,10 +7,11 @@ import (
 type KeyValuePairs map[string]string
 
 type Request struct {
-	Methods []string      `yaml:"methods"`
-	Path    string        `yaml:"path"`
-	Query   KeyValuePairs `yaml:"query"`
-	Headers KeyValuePairs `yaml:"headers"`
+	Methods    []string      `yaml:"methods"`
+	Path       string        `yaml:"path"`
+	PathPrefix string        `yaml:"path-prefix"`
+	Query      KeyValuePairs `yaml:"query"`
+	Headers    KeyValuePairs `yaml:"headers"`
 }
 
 func (req *Request) String() string {
