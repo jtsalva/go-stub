@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/fatih/color"
+	"github.com/goccy/go-yaml"
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
@@ -41,13 +41,13 @@ func (c *Config) LoadStubs() error {
 		fmt.Printf("Reading %s\n", color.BlueString(filePath[strings.LastIndex(filePath, "/")+1:]))
 		file, err := ioutil.ReadFile(filePath)
 		if err != nil {
-			return errors.Wrapf(err, "failed to read stub file '%s': %v", filePath, err.Error())
+			return errors.Errorf("failed to read stub file '%s': %v", filePath, err.Error())
 		}
 
 		var stubs []Stub
 		err = yaml.Unmarshal(file, &stubs)
 		if err != nil {
-			return errors.Wrapf(err, "failed to unmarshal stub file '%s': %v", filePath, err)
+			return errors.Errorf("failed to unmarshal stub file '%s': %v", filePath, yaml.FormatError(err, true, true))
 		}
 
 		allStubs = append(allStubs, stubs...)
