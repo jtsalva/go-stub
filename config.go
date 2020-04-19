@@ -33,7 +33,7 @@ func (c *Config) LoadStubs() error {
 
 	stubFilePaths, err := walkMatch(c.StubsDirectory, "*.yml")
 	if err != nil {
-		return errors.Wrapf(err, "failed to read stub directory: '%s'", c.StubsDirectory)
+		return errors.Wrapf(err, "failed to read stub directory '%s'", c.StubsDirectory)
 	}
 
 	var allStubs []Stub
@@ -41,13 +41,13 @@ func (c *Config) LoadStubs() error {
 		fmt.Printf("Reading %s\n", color.BlueString(filePath[strings.LastIndex(filePath, "/")+1:]))
 		file, err := ioutil.ReadFile(filePath)
 		if err != nil {
-			return errors.Errorf("failed to read stub file '%s': %v", filePath, err.Error())
+			return errors.Wrapf(err, "failed to read stub file '%s'", filePath)
 		}
 
 		var stubs []Stub
 		err = yaml.Unmarshal(file, &stubs)
 		if err != nil {
-			return errors.Errorf("failed to unmarshal stub file '%s': %v", filePath, yaml.FormatError(err, true, true))
+			return errors.Wrapf(err, "failed to unmarshal stub file '%s'", filePath)
 		}
 
 		allStubs = append(allStubs, stubs...)
