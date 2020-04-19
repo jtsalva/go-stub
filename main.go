@@ -18,11 +18,11 @@ var config = Config{
 }
 
 func main() {
+	color.NoColor = true
 	_, err := flags.Parse(&config)
 	if err != nil {
 		exitWithError(fmt.Sprintf("unable to parse command line flags: %s", err))
 	}
-
 	color.NoColor = config.DisableColor
 
 	err = config.LoadStubs()
