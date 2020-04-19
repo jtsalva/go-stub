@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 	"github.com/jessevdk/go-flags"
 )
@@ -87,5 +88,5 @@ func exitWithError(message string) {
 }
 
 func printError(message string) {
-	_, _ = fmt.Fprint(os.Stderr, message)
+	_, _ = fmt.Fprint(os.Stderr, color.RedString(message))
 }

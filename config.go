@@ -27,7 +27,7 @@ func (c *Config) IsCorsEnabled() bool {
 }
 
 func (c *Config) LoadStubs() error {
-	fmt.Printf("Loading test-stubs from %s\n", c.StubsDirectory)
+	fmt.Printf("Loading stubs from %s\n", c.StubsDirectory)
 
 	stubFilePaths, err := walkMatch(c.StubsDirectory, "*.yml")
 	if err != nil {

@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/fatih/color"
 )
 
 type KeyValuePairs map[string]string
@@ -15,7 +17,13 @@ type Request struct {
 }
 
 func (req *Request) String() string {
-	return fmt.Sprintf("%v %s", req.Methods, req.Path)
+	var route string
+	if req.Path != "" {
+		route = req.Path
+	} else {
+		route = req.PathPrefix
+	}
+	return fmt.Sprintf("%s %s", color.BlueString(fmt.Sprintf("%v", req.Methods)), color.GreenString(route))
 }
 
 type Response struct {
@@ -27,7 +35,7 @@ type Response struct {
 }
 
 func (res *Response) String() string {
-	return fmt.Sprintf("%d", res.Status)
+	return color.YellowString(fmt.Sprintf("%d", res.Status))
 }
 
 type Stub struct {
@@ -36,5 +44,5 @@ type Stub struct {
 }
 
 func (s *Stub) String() string {
-	return fmt.Sprintf("%s -> %s", s.Request.String(), s.Response.String())
+	return fmt.Sprintf("%s %s %s", s.Request.String(), color.CyanString("->"), s.Response.String())
 }
