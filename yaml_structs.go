@@ -7,14 +7,14 @@ import (
 type KeyValuePairs map[string]string
 
 type Request struct {
-	Method  []string      `yaml:"method"`
-	Url     string        `yaml:"url"`
+	Methods []string      `yaml:"methods"`
+	Path    string        `yaml:"path"`
 	Query   KeyValuePairs `yaml:"query"`
 	Headers KeyValuePairs `yaml:"headers"`
 }
 
 func (req *Request) String() string {
-	return fmt.Sprintf("%v %s", req.Method, req.Url)
+	return fmt.Sprintf("%v %s", req.Methods, req.Path)
 }
 
 type Response struct {

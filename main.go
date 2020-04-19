@@ -35,11 +35,11 @@ func serveStubs() {
 
 	for _, stub := range config.Stubs {
 		fmt.Printf("Registering %s\n", stub.String())
-		if config.IsCorsEnabled() && isMissingOptionsMethod(stub.Request.Method) {
-			stub.Request.Method = append(stub.Request.Method, http.MethodOptions)
+		if config.IsCorsEnabled() && isMissingOptionsMethod(stub.Request.Methods) {
+			stub.Request.Methods = append(stub.Request.Methods, http.MethodOptions)
 		}
-		router.HandleFunc(stub.Request.Url, StubHandler(stub)).
-			Methods(stub.Request.Method...).
+		router.HandleFunc(stub.Request.Path, StubHandler(stub)).
+			Methods(stub.Request.Methods...).
 			MatcherFunc(QueryMatcher(stub.Request.Query)).
 			MatcherFunc(HeadersMatcher(stub.Request.Headers))
 	}
