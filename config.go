@@ -20,6 +20,7 @@ type Config struct {
 	WriteTimeout    time.Duration `long:"write-timeout" description:"Server write timeout duration"`
 	ReadTimeout     time.Duration `long:"read-timeout" description:"Server read timeout duration"`
 	IdleTimeout     time.Duration `long:"idle-timeout" description:"Server idle timeout duration"`
+	DisableColor    bool          `long:"disable-color" description:"Disable color in console output"`
 	Stubs           []Stub
 }
 
