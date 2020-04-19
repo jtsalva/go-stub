@@ -7,24 +7,31 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/jessevdk/go-flags"
 )
 
 var config = Config{
-	Port:            8080,
 	WriteTimeout:    15000 * time.Millisecond,
 	ReadTimeout:     15000 * time.Millisecond,
 	IdleTimeout:     60000 * time.Millisecond,
-	StubsDirectory:  "./test-stubs",
-	CorsAllowOrigin: "*",
 }
 
 func main() {
+	parseCommandLineFlags()
+
 	err := config.LoadStubs()
 	if err != nil {
 		exitWithError(fmt.Sprintf("error loading stubs: %s", err))
 	}
 
 	serveStubs()
+}
+
+func parseCommandLineFlags() {
+	_, err := flags.Parse(&config)
+	if err != nil {
+		exitWithError(fmt.Sprintf("unable to parse command line flags: %s", err))
+	}
 }
 
 func serveStubs() {
@@ -53,6 +60,8 @@ func serveStubs() {
 		ReadTimeout:  config.ReadTimeout,
 		IdleTimeout:  config.IdleTimeout,
 	}
+
+	fmt.Printf("Serving stubs on port %d\n", config.Port)
 	err := srv.ListenAndServe()
 	if err != nil {
 		exitWithError(fmt.Sprintf("error starting server: %s", err))

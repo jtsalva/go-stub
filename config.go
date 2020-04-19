@@ -13,13 +13,13 @@ import (
 )
 
 type Config struct {
-	WriteTimeout    time.Duration
-	ReadTimeout     time.Duration
-	IdleTimeout     time.Duration
-	Port            int
-	StubsDirectory  string
+	StubsDirectory  string        `short:"d" long:"directory" description:"Path to directory containing yml stub files" required:"true"`
+	Port            int           `short:"p" long:"port" description:"Port to serve stubs from" required:"true"`
+	CorsAllowOrigin string        `short:"o" long:"cors-allow-origin" description:"Blanket allow CORS from specified origin"`
+	WriteTimeout    time.Duration `long:"write-timeout" description:"Server write timeout"`
+	ReadTimeout     time.Duration `long:"read-timeout" description:"Server read timeout"`
+	IdleTimeout     time.Duration `long:"idle-timeout" description:"Server idle timeout"`
 	Stubs           []Stub
-	CorsAllowOrigin string
 }
 
 func (c *Config) IsCorsEnabled() bool {
