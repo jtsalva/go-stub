@@ -28,7 +28,7 @@ func StubHandler(stub Stub) func(http.ResponseWriter, *http.Request) {
 		}
 		_, err = w.Write(response)
 		if err != nil {
-			printError(fmt.Sprintf("error writing response: %s", err))
+			printError(fmt.Sprintf("[%s %s] error writing response: %s", r.Method, stub.Request.Path, err))
 		}
 
 		if stub.Response.Latency != 0 {
