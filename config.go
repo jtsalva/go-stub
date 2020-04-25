@@ -52,6 +52,12 @@ func (c *Config) LoadStubs() error {
 			return errors.Wrapf(err, "failed to unmarshal stub file '%s'", filePath)
 		}
 
+		for _, stub := range stubs {
+			if err = stub.Validate(); err != nil {
+				return errors.Wrapf(err, "failed to validate stub in file '%s'", filePath)
+			}
+		}
+
 		allStubs = append(allStubs, stubs...)
 	}
 
