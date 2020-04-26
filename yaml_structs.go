@@ -49,8 +49,6 @@ func (res *Response) Validate() error {
 	var err error
 	if res.Status == 0 {
 		err = errors.New("missing response status")
-	} else if res.File == "" && res.Body == "" {
-		err = errors.New("missing response file or body")
 	}
 	return err
 }
