@@ -1,0 +1,22 @@
+- request:
+    methods: [GET]
+    path: /api/user
+  response:
+    status: 200
+    headers:
+      Content-Type: application/json
+    file: "path/to/user.json"
+
+- request:
+    methods: [PUT, PATCH]
+    path: /api/user
+  response:
+    status: 204
+    latency: 100
+
+- request:
+    methods: [GET, PUT, POST, PATCH, DELETE]
+    path-prefix: /api/admin
+  response:
+    status: 403
+    body: forbidden

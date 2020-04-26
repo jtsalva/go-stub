@@ -1,0 +1,5 @@
+# abstract re-usable anchors
+- response: &json-response
+    status: 200
+    headers: &json-headers
+      Content-Type: application/json

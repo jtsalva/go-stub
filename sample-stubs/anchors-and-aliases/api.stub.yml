@@ -1,0 +1,13 @@
+- request:
+    methods: [GET]
+    path: /api/user
+  response:
+    status: 200
+    headers: *json-headers # use json-headers anchor defined in base.yml
+
+- request:
+    methods: [GET]
+    path: /api/todo
+  response:
+    <<: *json-response # declare alias like this to add and override fields from the anchor
+    file: "path/to/todo.json"
